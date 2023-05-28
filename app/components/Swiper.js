@@ -3,7 +3,6 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Pagination, Navigation } from "swiper"
 import Image from "next/image"
 
-// Import Swiper styles
 import "swiper/css"
 import "swiper/css/pagination"
 
@@ -34,7 +33,8 @@ export default () => {
           src={"/buddha.jpg"}
           width={300}
           height={200}
-          alt="dish01"
+          alt={"dish01"}
+          priority={true}
         ></Image>
       </SwiperSlide>
       <SwiperSlide>
@@ -42,7 +42,8 @@ export default () => {
           src={"/chicken.jpg"}
           width={300}
           height={200}
-          alt="dish02"
+          alt={"dish02"}
+          priority={true}
         ></Image>
       </SwiperSlide>
       <SwiperSlide>
@@ -50,7 +51,8 @@ export default () => {
           src={"/hamburger.jpg"}
           width={300}
           height={200}
-          alt="dish03"
+          alt={"dish03"}
+          priority={true}
         ></Image>
       </SwiperSlide>
     </Swiper>

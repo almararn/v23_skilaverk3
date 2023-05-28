@@ -1,4 +1,4 @@
-export default function TopMenu() {
+const topMenu = () => {
   return (
     <nav>
       <ul className="bg-red-400 flex justify-evenly py-4 mb-2 font-semibold text-lg">
@@ -11,3 +11,5 @@ export default function TopMenu() {
     </nav>
   )
 }
+
+export default topMenu
