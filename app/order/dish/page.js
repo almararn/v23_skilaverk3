@@ -19,24 +19,20 @@ export default function orderDish() {
 
     if (data && savedDish.length == 0) {
       setDish(data.meals[0])
-      Object.entries(data.meals[0]).map((item) => {
-        if (item[0].includes("strIngredient")) {
-          if (item[1] != "" && item[1] != null) {
-            setIngredients((ingredients) => [...ingredients, item[1]])
-          }
-        }
-      })
     } else {
       setDish(savedDish)
-      Object.entries(savedDish).map((item) => {
-        if (item[0].includes("strIngredient")) {
-          if (item[1] != "" && item[1] != null) {
-            setIngredients((ingredients) => [...ingredients, item[1]])
-          }
-        }
-      })
     }
   }, [data])
+
+  useEffect(() => {
+    Object.entries(dish).map((item) => {
+      if (item[0].includes("strIngredient")) {
+        if (item[1] != "" && item[1] != null) {
+          setIngredients((ingredients) => [...ingredients, item[1]])
+        }
+      }
+    })
+  }, [dish])
 
   useEffect(() => {
     setPrice(price + ingredients.length * 80)
@@ -46,7 +42,7 @@ export default function orderDish() {
     const newDish = { ...dish, count: count }
     localStorage.setItem(
       "current-order",
-      JSON.stringify({ dish: newDish, drinksDemo: newDish })
+      JSON.stringify({ dish: newDish })
     )
   }
 
