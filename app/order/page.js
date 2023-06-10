@@ -23,10 +23,18 @@ export default function selectTime() {
     let savedDate = currentOrder?.order || []
     setDish(savedDish)
     setDrinks(savedDrinks)
-    setDateFromStorage(savedDate)
-    setEmail(savedDate.email)
-    setCount(savedDate.numberOfPeople)
+    if (currentOrder?.order?.numberOfPeople) {
+      setDateFromStorage(savedDate)
+      setEmail(savedDate.email)
+      setCount(savedDate.numberOfPeople)
+    }
   }, [])
+
+  useEffect(() => {
+    if (dateFromStorage.email) {
+      setValid(true)
+    }
+  }, [dateFromStorage])
 
   const handleStartDateChange = (date) => {
     setDate(date)
@@ -42,10 +50,10 @@ export default function selectTime() {
   const setNumperOfPeople = (increment) => {
     setCount(count + increment)
   }
-console.log("dateFromStorage", dateFromStorage)
+  console.log("dateFromStorage", dateFromStorage)
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (dateFromStorage.dateTime ) {
+    if (dateFromStorage.dateTime) {
       let order = {
         dateTime: dateFromStorage.dateTime?.toString(),
         numberOfPeople: dateFromStorage.numberOfPeople,
@@ -82,7 +90,8 @@ console.log("dateFromStorage", dateFromStorage)
       <div>
         <h1>Select the Date and Time you would like your order</h1>
         <SelectDate
-          onStartDateChange={handleStartDateChange} savedDate={dateFromStorage.dateTime}
+          onStartDateChange={handleStartDateChange}
+          savedDate={dateFromStorage.dateTime}
         />
       </div>
       <h1>Choose number of persons:</h1>

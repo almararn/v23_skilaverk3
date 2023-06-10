@@ -15,11 +15,14 @@ export default ({ onStartDateChange, savedDate }) => {
     setHours(setMinutes(date, 0), date.getHours() + 1)
   )
 
-  console.log("startDate", startDate)
   const handleStartDateChange = (date) => {
     setStartDate(date)
     onStartDateChange(date)
   }
+
+  useEffect(() => {
+    onStartDateChange(setHours(setMinutes(date, 0), date.getHours() + 1))
+  }, [])
 
   useEffect(() => {
       setStoredTime(dateFromStorage.getTime())
