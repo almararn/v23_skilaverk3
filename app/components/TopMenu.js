@@ -1,8 +1,9 @@
+import Link from "next/link";
 const topMenu = () => {
   return (
     <nav>
       <ul className="bg-red-400 flex justify-evenly py-4 mb-2 font-semibold text-lg">
-        <li>LOGO</li>
+      <li><Link href={"/"}>LOGO</Link></li>
         <li>Restaurants</li>
         <li>Menus</li>
         <li>Opening Hours</li>

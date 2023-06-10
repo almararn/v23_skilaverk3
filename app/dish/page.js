@@ -40,10 +40,7 @@ export default function orderDish() {
 
   let handleClick = function () {
     const newDish = { ...dish, count: count }
-    localStorage.setItem(
-      "current-order",
-      JSON.stringify({ dish: newDish })
-    )
+    localStorage.setItem("current-order", JSON.stringify({ dish: newDish }))
   }
 
   return (
@@ -79,7 +76,7 @@ export default function orderDish() {
             </button>{" "}
             {count} <button onClick={() => setCount(count + 1)}>X</button>
           </h2>
-          <Link href={"order/drinks"}>
+          <Link href={"/drinks"}>
             <button onClick={handleClick}>add to cart</button>
           </Link>
         </>

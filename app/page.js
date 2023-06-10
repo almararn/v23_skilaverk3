@@ -7,7 +7,7 @@ export default function Home() {
    <h1 className='text-center font-extrabold'>MAIN PAGE</h1>
    <div className="">
     <Swiper />
-    <Link href={"order/dish"}>ORDER</Link>
+    <Link href={"/dish"}>ORDER</Link>
    </div>
    </> 
    

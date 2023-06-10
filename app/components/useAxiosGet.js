@@ -17,10 +17,11 @@ export default function useAxiosGet(url) {
         setError(error)
       })
       .finally(() => {
-        setLoading(false) 
+        setLoading(false)
       })
-      console.log('data fetched with axios')
+      //TODO: remove this console.log
+    console.log("data fetched with axios")
   }, [url])
 
-  return {data, loading, error}
+  return { data, loading, error }
 }

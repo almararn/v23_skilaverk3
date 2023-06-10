@@ -27,20 +27,18 @@ export default function orderDrinks() {
     setDish(savedDish)
   }, [data])
 
-  let setCount = function (id, increment) {
+  const setCount = (id, increment) => {
     setDrinks(drinks => drinks.map(obj =>
         obj.id === id ? { ...obj, count: obj.count + increment } : obj
       ));
   }
 
-  let handleClick = function () {
+  const handleClick = () => {
     localStorage.setItem(
       "current-order",
       JSON.stringify({ dish: dish, drinks: drinks })
     )
   }
-
-  console.log(drinks)
 
   return (
     <>
@@ -62,7 +60,7 @@ export default function orderDrinks() {
               </h2>
             </div>
           ))}
-                    <Link href={"order/drinks"}>
+                    <Link href={"/order"}>
             <button onClick={handleClick}>add to cart</button>
           </Link>
         </>
