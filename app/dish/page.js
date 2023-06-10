@@ -9,6 +9,8 @@ export default function orderDish() {
   const [ingredients, setIngredients] = useState([])
   const [price, setPrice] = useState(2500)
   const [count, setCount] = useState(1)
+  const [drinks, setDrinks] = useState([])
+  const [dateFromStorage, setDateFromStorage] = useState([])
   const { data, loading, error } = useAxiosGet(
     "https://themealdb.com/api/json/v1/1/random.php"
   )
@@ -16,7 +18,10 @@ export default function orderDish() {
   useEffect(() => {
     let currentOrder = JSON.parse(localStorage.getItem("current-order"))
     let savedDish = currentOrder?.dish || []
-
+    let savedDrinks = currentOrder?.drinks || []
+    let savedDate = currentOrder?.order || []
+    setDrinks(savedDrinks)
+    setDateFromStorage(savedDate)
     if (data && savedDish.length == 0) {
       setDish(data.meals[0])
     } else {
@@ -40,7 +45,19 @@ export default function orderDish() {
 
   let handleClick = function () {
     const newDish = { ...dish, count: count }
-    localStorage.setItem("current-order", JSON.stringify({ dish: newDish }))
+    let order = {
+      dateTime: dateFromStorage.dateTime?.toString(),
+      numberOfPeople: dateFromStorage.numberOfPeople,
+      email: dateFromStorage.email,
+    }
+    localStorage.setItem(
+      "current-order",
+      JSON.stringify({
+        dish: newDish,
+        drinks: drinks,
+        order,
+      })
+    )
   }
 
   return (

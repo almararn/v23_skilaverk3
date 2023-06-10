@@ -23,7 +23,9 @@ export default function selectTime() {
     let savedDate = currentOrder?.order || []
     setDish(savedDish)
     setDrinks(savedDrinks)
-    setDateFromStorage(savedDate.dateTime)
+    setDateFromStorage(savedDate)
+    setEmail(savedDate.email)
+    setCount(savedDate.numberOfPeople)
   }, [])
 
   const handleStartDateChange = (date) => {
@@ -40,15 +42,15 @@ export default function selectTime() {
   const setNumperOfPeople = (increment) => {
     setCount(count + increment)
   }
-
+console.log("dateFromStorage", dateFromStorage)
   const handleSubmit = (e) => {
     e.preventDefault()
-    let order = {
-      dateTime: date.toString(),
-      numberOfPeople: count,
-      email: email,
-    }
-    if (true) {
+    if (dateFromStorage.dateTime ) {
+      let order = {
+        dateTime: dateFromStorage.dateTime?.toString(),
+        numberOfPeople: dateFromStorage.numberOfPeople,
+        email: dateFromStorage.email,
+      }
       localStorage.setItem(
         "current-order",
         JSON.stringify({
@@ -57,8 +59,22 @@ export default function selectTime() {
           order,
         })
       )
-      router.push("/receipt")
+    } else {
+      let order = {
+        dateTime: date.toString(),
+        numberOfPeople: count,
+        email: email,
+      }
+      localStorage.setItem(
+        "current-order",
+        JSON.stringify({
+          dish: dish,
+          drinks: drinks,
+          order,
+        })
+      )
     }
+    router.push("/receipt")
   }
 
   return (
@@ -66,7 +82,7 @@ export default function selectTime() {
       <div>
         <h1>Select the Date and Time you would like your order</h1>
         <SelectDate
-          onStartDateChange={handleStartDateChange}
+          onStartDateChange={handleStartDateChange} savedDate={dateFromStorage.dateTime}
         />
       </div>
       <h1>Choose number of persons:</h1>

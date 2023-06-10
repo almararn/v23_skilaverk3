@@ -6,16 +6,25 @@ import enGB from "date-fns/locale/en-GB"
 registerLocale("enGB", enGB)
 import "react-datepicker/dist/react-datepicker.css"
 
-export default ({ onStartDateChange }) => {
+export default ({ onStartDateChange, savedDate }) => {
   const date = new Date()
+  const dateFromStorage = new Date(savedDate)
+  const [built, setBuilt] = useState(false)
+  const [storedTime, setStoredTime] = useState()
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(date, 0), date.getHours() + 1)
   )
 
+  console.log("startDate", startDate)
   const handleStartDateChange = (date) => {
     setStartDate(date)
     onStartDateChange(date)
   }
+
+  useEffect(() => {
+      setStoredTime(dateFromStorage.getTime())
+      setBuilt(true)
+  }, [dateFromStorage])
 
   const minTimeHours = () => {
     if (startDate.getTime() < 16) {
@@ -27,17 +36,19 @@ export default ({ onStartDateChange }) => {
 
   return (
     <>
-      <DatePicker
-        inline
-        showTimeSelect
-        selected={startDate}
-        onChange={handleStartDateChange}
-        minTime={setHours(setMinutes(date, 0), minTimeHours())}
-        maxTime={setHours(setMinutes(date, 0), 23)}
-        minDate={date}
-        dateFormat="d MMMM, yyyy HH:mm"
-        locale="enGB"
-      />
+      {built && (
+        <DatePicker
+          inline
+          showTimeSelect
+          selected={storedTime ? storedTime : startDate}
+          onChange={handleStartDateChange}
+          minTime={setHours(setMinutes(date, 0), minTimeHours())}
+          maxTime={setHours(setMinutes(date, 0), 23)}
+          minDate={date}
+          dateFormat="d MMMM, yyyy HH:mm"
+          locale="enGB"
+        />
+      )}
     </>
   )
 }

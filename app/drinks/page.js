@@ -7,6 +7,7 @@ import Link from "next/link"
 export default function orderDrinks() {
   const [dish, setDish] = useState([])
   const [drinks, setDrinks] = useState([])
+  const [dateFromStorage, setDateFromStorage] = useState([])
   const { data, loading, error } = useAxiosGet(
     "https://api.punkapi.com/v2/beers"
   )
@@ -14,29 +15,41 @@ export default function orderDrinks() {
     let currentOrder = JSON.parse(localStorage.getItem("current-order"))
     let savedDish = currentOrder?.dish || []
     let savedDrinks = currentOrder?.drinks || []
-
+    let savedDate = currentOrder?.order || []
     if (data && savedDrinks.length == 0) {
       let newList = []
-      data.forEach(obj => {
-        newList.push({...obj, "count" : 0})    
+      data.forEach((obj) => {
+        newList.push({ ...obj, count: 0 })
       })
       setDrinks(newList)
     } else {
       setDrinks(savedDrinks)
     }
     setDish(savedDish)
+    setDateFromStorage(savedDate)
   }, [data])
 
   const setCount = (id, increment) => {
-    setDrinks(drinks => drinks.map(obj =>
+    setDrinks((drinks) =>
+      drinks.map((obj) =>
         obj.id === id ? { ...obj, count: obj.count + increment } : obj
-      ));
+      )
+    )
   }
 
   const handleClick = () => {
+    let order = {
+      dateTime: dateFromStorage.dateTime?.toString(),
+      numberOfPeople: dateFromStorage.numberOfPeople,
+      email: dateFromStorage.email,
+    }
     localStorage.setItem(
       "current-order",
-      JSON.stringify({ dish: dish, drinks: drinks })
+      JSON.stringify({
+        dish: dish,
+        drinks: drinks,
+        order,
+      })
     )
   }
 
@@ -53,14 +66,17 @@ export default function orderDrinks() {
               <h5>{items.description}</h5>
               <h2>
                 {" "}
-                <button onClick={() => items.count > 0 && setCount(items.id, -1)}>
+                <button
+                  onClick={() => items.count > 0 && setCount(items.id, -1)}
+                >
                   X
                 </button>
-                {items.count}<button onClick={() => setCount(items.id, +1)}>X</button>
+                {items.count}
+                <button onClick={() => setCount(items.id, +1)}>X</button>
               </h2>
             </div>
           ))}
-                    <Link href={"/order"}>
+          <Link href={"/order"}>
             <button onClick={handleClick}>add to cart</button>
           </Link>
         </>
