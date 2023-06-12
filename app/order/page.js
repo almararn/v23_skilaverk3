@@ -1,10 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
-import useAxiosGet from "@/app/components/useAxiosGet"
-import Link from "next/link"
-import SelectDate from "../components/SelectDate"
+import Calendar from "../components/Calendar"
 
 export default function selectTime() {
   const [dish, setDish] = useState([])
@@ -53,10 +50,15 @@ export default function selectTime() {
   }
 
   const handleSubmit = (e) => {
+    let newDate = date
+    if(new Date(newDate).getHours() < 16){
+     newDate = new Date(date).setHours(16)
+     newDate = new Date(newDate)
+    }
     e.preventDefault()
     if (isValid) {
       let order = {
-        dateTime: date.toString(),
+        dateTime: newDate.toString(),
         numberOfPeople: count,
         email: email,
       }
@@ -76,7 +78,7 @@ export default function selectTime() {
     <>
       <div>
         <h1>Select the Date and Time you would like your order</h1>
-        <SelectDate
+        <Calendar
           onStartDateChange={handleStartDateChange}
           savedDate={dateFromStorage.dateTime}
         />

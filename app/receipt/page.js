@@ -1,8 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
-import useAxiosGet from "@/app/components/useAxiosGet"
 import Link from "next/link"
 
 export default function orderDrinks() {
@@ -42,7 +40,7 @@ export default function orderDrinks() {
     })
   }, [drinks])
 
-  const handleClick = () => {
+  const confirmOrder = () => {
     localStorage.setItem(order.email, localStorage.getItem("current-order"))
     localStorage.removeItem("current-order")
     setOrderFinished(true)
@@ -51,15 +49,23 @@ export default function orderDrinks() {
     }, 3000)
   }
 
+  const editOrder = () => {
+    router.push("/dish")
+  }
+
   const price = (abv) => {
     return Math.round(abv * 200)
   }
 
-  const setCartStatus = () => {
-    
+  const total = () => {
+    let total = 0
+    drinks.forEach((drink) => {
+      total += drink.count * price(drink.abv)
+    })
+    total += dish.price * dish.count
+    return total
   }
 
-  
   return (
     <>
       {!orderFinished ? (
@@ -80,7 +86,8 @@ export default function orderDrinks() {
                 ))}
               </ul>
             )}
-            <h2>{order.email}</h2>
+            <h2>Total price: {total()} kr.</h2>
+            <h2>Customer: {order.email}</h2>
             <div>
               <h2>You have a table reserved at our restaurant</h2>
               <h2>
@@ -89,7 +96,8 @@ export default function orderDrinks() {
                 at <span>{hours}</span>:<span>{minutes}</span>
               </h2>
             </div>
-            <button onClick={handleClick}>CONFIRM ORDER</button>
+            <button onClick={confirmOrder}>CONFIRM ORDER</button>{" "}
+            <button onClick={editOrder}>EDIT ORDER</button>
           </>
         ) : !cartEmpty ? (
           <h1>LOADING</h1>

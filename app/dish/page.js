@@ -10,10 +10,11 @@ export default function orderDish() {
   const [price, setPrice] = useState(2500)
   const [count, setCount] = useState(1)
   const [drinks, setDrinks] = useState([])
+  const [dishFromStorage, setDishFromStorage] = useState(false)
+  const [newDish, setNewDish] = useState()
   const [dateFromStorage, setDateFromStorage] = useState([])
-  const { data, loading, error } = useAxiosGet(
-    "https://themealdb.com/api/json/v1/1/random.php"
-  )
+  const url ="https://themealdb.com/api/json/v1/1/random.php"
+  const { data, loading, error } = useAxiosGet(url, newDish)
 
   useEffect(() => {
     let currentOrder = JSON.parse(localStorage.getItem("current-order"))
@@ -22,10 +23,15 @@ export default function orderDish() {
     let savedDate = currentOrder?.order || []
     setDrinks(savedDrinks)
     setDateFromStorage(savedDate)
-    if (data && savedDish.length == 0) {
+    if ((data && savedDish.length == 0) || newDish) {
       setDish(data.meals[0])
+      console.log('númer1')
     } else {
       setDish(savedDish)
+      console.log('númer2')
+    }
+    if(currentOrder && !newDish){
+      setDishFromStorage(true)
     }
   }, [data])
 
@@ -43,7 +49,7 @@ export default function orderDish() {
     setPrice(price + ingredients.length * 80)
   }, [ingredients])
 
-  let handleClick = function () {
+  const handleClick = function () {
     const newDish = { ...dish, count: count, price: price }
     let order = {
       dateTime: dateFromStorage.dateTime?.toString(),
@@ -58,6 +64,14 @@ export default function orderDish() {
         order,
       })
     )
+  }
+
+  const getNewDish = () => {
+    setNewDish(Math.random())
+    setIngredients([])
+    setPrice(2500)
+    setCount(1)
+    setDishFromStorage(false)
   }
 
   return (
@@ -94,7 +108,11 @@ export default function orderDish() {
             {count} <button onClick={() => setCount(count + 1)}>X</button>
           </h2>
           <Link href={"/drinks"}>
-            <button onClick={handleClick}>add to cart</button>
+            <button onClick={handleClick}>Add To Cart</button> {""}
+          </Link>
+          <button onClick={getNewDish}>Get New Dish</button> {""}
+          <Link href={"/drinks"}>
+            {dishFromStorage && <button>NEXT</button>} 
           </Link>
         </>
       )}

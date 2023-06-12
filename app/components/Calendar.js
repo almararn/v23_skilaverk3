@@ -37,7 +37,11 @@ export default ({ onStartDateChange, savedDate }) => {
     while (isWeekend(nextDate)) {
       nextDate = addDays(nextDate, 1)
     }
+    if(date.getHours() < 16){
+      setStartDate(setHours(setMinutes(nextDate, 0), 16))
+    } else {
     setStartDate(setHours(setMinutes(nextDate, 0), nextDate.getHours() + 1))
+    }
     onStartDateChange(startDate)
   }, [])
 
@@ -49,18 +53,26 @@ export default ({ onStartDateChange, savedDate }) => {
   }, [dateFromStorage])
 
   const minTimeHours = () => {
-    if (date.getMinutes() > 29) {
-      return startDate.getDate() === date.getDate() ? date.getHours() + 1 : 16
+    if (startDate.getDate() == date.getDate() && date.getHours() < 16) {
+      return 16
     } else {
-      return startDate.getDate() === date.getDate() ? date.getHours() : 16
+      if (date.getMinutes() > 29) {
+        return startDate.getDate() === date.getDate() ? date.getHours() + 1 : 16
+      } else {
+        return startDate.getDate() === date.getDate() ? date.getHours() : 16
+      }
     }
   }
 
   const minTimeMinutes = () => {
-    if (startDate.getDate() === date.getDate()) {
-      return date.getMinutes() > 29 ? 0 : 30
-    } else {
+    if (startDate.getDate() == date.getDate() && date.getHours() < 16) {
       return 0
+    } else {
+      if (startDate.getDate() === date.getDate()) {
+        return date.getMinutes() > 29 ? 0 : 30
+      } else {
+        return 0
+      }
     }
   }
 

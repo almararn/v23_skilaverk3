@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-export default function useAxiosGet(url) {
+export default function useAxiosGet(url, newDish) {
   const [data, setData] = useState()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -19,9 +19,7 @@ export default function useAxiosGet(url) {
       .finally(() => {
         setLoading(false)
       })
-      //TODO: remove this console.log
-    console.log("data fetched with axios")
-  }, [url])
+  }, [url, newDish])
 
   return { data, loading, error }
 }
