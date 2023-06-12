@@ -96,8 +96,11 @@ export default function orderDrinks() {
                 at <span>{hours}</span>:<span>{minutes}</span>
               </h2>
             </div>
-            <button onClick={confirmOrder}>CONFIRM ORDER</button>{" "}
-            <button onClick={editOrder}>EDIT ORDER</button>
+            <button onClick={confirmOrder}>CONFIRM ORDER</button> {" "}
+            <button onClick={editOrder}>EDIT ORDER</button> {" "}
+            <Link href={"/order"}>
+            <button className="mt-4">GO BACK</button>
+          </Link>
           </>
         ) : !cartEmpty ? (
           <h1>LOADING</h1>

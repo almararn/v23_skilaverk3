@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import Swiper from "./components/Swiper"
 import Link from "next/link"
 
@@ -11,11 +12,13 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    let items = localStorage.getItem(email)
-    if (items) {
-      setOrderFound(true)
-    } else {
-      setOrderNotFound(true)
+    if (isValid) {
+      let items = localStorage.getItem(email)
+      if (items) {
+        setOrderFound(true)
+      } else {
+        setOrderNotFound(true)
+      }
     }
   }
 
@@ -23,14 +26,15 @@ export default function Home() {
     localStorage.setItem("current-order", localStorage.getItem(email))
   }
 
-  useEffect(() => { 
+  useEffect(() => {
     localStorage.removeItem("current-order")
   }, [])
 
-  useEffect(() => { 
+  useEffect(() => {
     if (orderNotFound) {
       setTimeout(() => {
         setOrderNotFound(false)
+        setIsValid(false)
         setEmail("")
       }, 3000)
     }
@@ -44,37 +48,81 @@ export default function Home() {
   }
 
   return (
-    <>
-      <h1 className="text-center font-extrabold">MAIN PAGE</h1>
+    <div className="grid grid-cols-2 mx-auto mt-32 max-w-5xl pr-6">
       <div className="">
         <Swiper />
-        <Link href={"/dish"}>ORDER</Link>
       </div>
-      <div>
+      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4">
+        <p className="font-bold text-base">
+          Welcome to Lil'Bits, a cozy and vibrant eatery that will captivate
+          your taste buds with its delightful flavors and charming ambiance.
+          Nestled in the heart of town, Lil'Bits is a haven for food lovers
+          seeking a unique culinary experience. Our talented chefs craft an
+          array of delectable dishes using the freshest, locally sourced
+          ingredients, ensuring each bite bursts with exquisite flavors.
+        </p>
+        <div className="float-right bg-lil-red rounded-lg mt-6 px-3 py-1">
+          <Link href={"/dish"}>ORDER HERE</Link>
+        </div>
+      </div>
+
+      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 mt-10 ml-12 mr-12">
         <form onSubmit={handleSubmit}>
+          {isValid && (
+            <Image
+              src={"/checkmark.png"}
+              width={100}
+              height={100}
+              alt={"checkmark"}
+              priority={true}
+              className="absolute ml-56"
+            />
+          )}
+          <p>Please enter your email address to find order</p>
+
           <label>
-            <p>Please enter your email address to find order</p>
-            Email:
-            <input type="text" value={email} onChange={handleChange} />
+            <span className="font-bold">Email: </span>
+            <input
+              type="text"
+              className="bg-lil-yellow border-2  border-lil-green rounded-lg px-2 py-1 mt-2"
+              value={email}
+              onChange={handleChange}
+            />
           </label>
-          <div>
+
+          <div className="float-right bg-lil-red rounded-lg mt-24 px-3 py-1">
             <button type="submit">Submit</button>
+          </div>
+          <div>
+            {orderFound && (
+              <div className="mt-5">
+                <h2>Your order was found</h2>
+                <Link onClick={saveItem} href={"/receipt"}>
+                  <button className=" bg-lil-red rounded-lg mt-1 px-3 py-1">
+                    EDIT ORDER
+                  </button>
+                </Link>
+              </div>
+            )}
+            {orderNotFound && (
+              <div className="mt-3">
+                <h2>Your order was not found</h2>
+                <h2>Please try again</h2>
+              </div>
+            )}
           </div>
         </form>
       </div>
-      {orderFound && (
-        <div>
-          <h2>Your order was found</h2>
-          <Link onClick={saveItem} href={"/receipt"}>
-            EDIT ORDER
-          </Link>
-        </div>
-      )}
-      {orderNotFound && (
-        <div>
-          <h2>Your order was not found</h2>
-        </div>
-      )}
-    </>
+      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 mt-10">
+        <p className="font-bold text-base">
+          At Lil'Bits, we believe that exceptional food goes hand in hand with
+          exceptional service. Our friendly and attentive staff is dedicated to
+          ensuring that your visit is nothing short of extraordinary. Whether
+          you're enjoying a casual lunch, celebrating a special occasion, or
+          simply indulging in a night out, our team will make you feel right at
+          home.
+        </p>
+      </div>
+    </div>
   )
 }

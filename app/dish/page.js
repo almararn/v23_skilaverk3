@@ -111,9 +111,9 @@ export default function orderDish() {
             <button onClick={handleClick}>Add To Cart</button> {""}
           </Link>
           <button onClick={getNewDish}>Get New Dish</button> {""}
-          <Link href={"/drinks"}>
-            {dishFromStorage && <button>NEXT</button>} 
-          </Link>
+          {dishFromStorage &&<Link href={"/drinks"}>
+             <button>NEXT</button>
+          </Link>} 
         </>
       )}
     </>

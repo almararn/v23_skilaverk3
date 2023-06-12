@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import Calendar from "../components/Calendar"
 
 export default function selectTime() {
@@ -10,6 +11,7 @@ export default function selectTime() {
   const [dateFromStorage, setDateFromStorage] = useState([])
   const [email, setEmail] = useState("")
   const [isValid, setIsValid] = useState(false)
+  const [orderIsEmpty, setOrderIsEmpty] = useState(true)
   const [count, setCount] = useState(1)
   const router = useRouter()
 
@@ -25,6 +27,7 @@ export default function selectTime() {
       setEmail(savedDate.email)
       setCount(savedDate.numberOfPeople)
       setDate(new Date(savedDate.dateTime))
+      setOrderIsEmpty(false)
     }
   }, [])
 
@@ -51,9 +54,9 @@ export default function selectTime() {
 
   const handleSubmit = (e) => {
     let newDate = date
-    if(new Date(newDate).getHours() < 16){
-     newDate = new Date(date).setHours(16)
-     newDate = new Date(newDate)
+    if (new Date(newDate).getHours() < 16) {
+      newDate = new Date(date).setHours(16)
+      newDate = new Date(newDate)
     }
     e.preventDefault()
     if (isValid) {
@@ -101,6 +104,16 @@ export default function selectTime() {
           </div>
         </form>
       </div>
+      {!orderIsEmpty && (
+        <>
+          <Link href={"/receipt"}>
+            <button>NEXT</button>
+          </Link> {""}
+          <Link href={"/drinks"}>
+            <button>GO BACK</button>
+          </Link>
+        </>
+      )}
     </>
   )
 }

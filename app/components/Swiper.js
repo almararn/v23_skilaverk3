@@ -1,6 +1,6 @@
 "use client"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Autoplay, Pagination, Navigation } from "swiper"
+import { Autoplay, Pagination } from "swiper"
 import Image from "next/image"
 
 import "swiper/css"
@@ -9,10 +9,11 @@ import "swiper/css/pagination"
 export default () => {
   return (
     <Swiper
+    className="rounded-3xl"
       modules={[Autoplay, Pagination]}
       spaceBetween={5}
       slidesPerView={1}
-      speed={2000}
+      speed={3000}
       loop={true}
       autoplay={{
         delay: 2500,
@@ -25,13 +26,13 @@ export default () => {
         "--swiper-pagination-bullet-inactive-opacity": "1",
         "--swiper-pagination-bullet-size": "5px",
         "--swiper-pagination-bullet-horizontal-gap": "6px",
-        "width" : "300px"
+        "width" : "400px"
       }}
     >
       <SwiperSlide>
         <Image
           src={"/buddha.jpg"}
-          width={300}
+          width={400}
           height={200}
           alt={"dish01"}
           priority={true}
@@ -40,7 +41,7 @@ export default () => {
       <SwiperSlide>
         <Image
           src={"/chicken.jpg"}
-          width={300}
+          width={400}
           height={200}
           alt={"dish02"}
           priority={true}
@@ -49,7 +50,7 @@ export default () => {
       <SwiperSlide>
         <Image
           src={"/hamburger.jpg"}
-          width={300}
+          width={400}
           height={200}
           alt={"dish03"}
           priority={true}

@@ -7,6 +7,8 @@ export default function orderDrinks() {
   const [dish, setDish] = useState([])
   const [drinks, setDrinks] = useState([])
   const [dateFromStorage, setDateFromStorage] = useState([])
+  const [gotSavedDrinks, setGotSavedDrinks] = useState(false)
+  const [noDrinks, setNoDrinks] = useState(true)
   const { data, loading, error } = useAxiosGet(
     "https://api.punkapi.com/v2/beers"
   )
@@ -26,6 +28,9 @@ export default function orderDrinks() {
     }
     setDish(savedDish)
     setDateFromStorage(savedDate)
+    if (savedDrinks.length > 0) {
+      setGotSavedDrinks(true)
+    }
   }, [data])
 
   const setCount = (id, increment) => {
@@ -35,6 +40,20 @@ export default function orderDrinks() {
       )
     )
   }
+
+  useEffect(() => {
+    let list = []
+    drinks.map((obj) => {
+      if (obj.count > 0) {
+        list.push(obj.count)
+      }
+    })
+    if (list.length > 0) {
+      setNoDrinks(false)
+    } else {
+      setNoDrinks(true)
+    }
+  }, [drinks])
 
   const price = (abv) => {
     return Math.round(abv * 200)
@@ -81,8 +100,18 @@ export default function orderDrinks() {
             </div>
           ))}
           <Link href={"/order"}>
-            <button onClick={handleClick}>add to cart</button>
+            <button onClick={handleClick}>add to cart</button>{" "}
           </Link>
+          {gotSavedDrinks && (
+            <>
+              <Link href={"/order"}>
+                <button>NEXT</button>
+              </Link> {" "}
+              <Link href={"/dish"}>
+                <button>GO BACK</button>
+              </Link>
+            </>
+          )}
         </>
       )}
     </>
