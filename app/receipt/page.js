@@ -11,7 +11,8 @@ export default function orderDrinks() {
   const [orderFinished, setOrderFinished] = useState(false)
   const [cartEmpty, setCartEmpty] = useState(false)
   const [deletingOrder, setDeletingOrder] = useState(false)
-  const [deletePromt, setDeletePromt] = useState(false) 
+  const [deletePromt, setDeletePromt] = useState(false)
+  const [orderToOld, setOrderToOld] = useState(false)
   const date = new Date(order.dateTime)
   const year = date.getFullYear()
   const month = date.toLocaleString("en-US", { month: "long" })
@@ -42,6 +43,12 @@ export default function orderDrinks() {
       }
     })
   }, [drinks])
+
+  useEffect(() => {
+    if (new Date(order.dateTime) < new Date()) {
+      setOrderToOld(true)
+    }
+  }, [order])
 
   const confirmOrder = () => {
     localStorage.setItem(order.email, localStorage.getItem("current-order"))
@@ -130,29 +137,41 @@ export default function orderDrinks() {
                 at <span>{hours}</span>:<span>{minutes}</span>
               </h2>
             </div>
-            <Link href={"/order"}>
-              <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1">
-                GO BACK
-              </button>
-            </Link>
-            <button
-              className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mx-4"
-              onClick={editOrder}
-            >
-              EDIT ORDER
-            </button>
-            <button
-              onClick={cancelOrder}
-              className=" bg-lil-red rounded-lg mt-6 px-3 py-1"
-            >
-              CANCEL ORDER
-            </button>
-            <button
-              className=" bg-lil-red rounded-lg mt-6 px-3 py-1 float-right"
-              onClick={confirmOrder}
-            >
-              CONFIRM ORDER
-            </button>
+            {!orderToOld ? (
+              <>
+                <Link href={"/order"}>
+                  <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1">
+                    GO BACK
+                  </button>
+                </Link>
+                <button
+                  className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mx-4"
+                  onClick={editOrder}
+                >
+                  EDIT ORDER
+                </button>
+                <button
+                  onClick={cancelOrder}
+                  className=" bg-lil-red rounded-lg mt-6 px-3 py-1"
+                >
+                  CANCEL ORDER
+                </button>
+                <button
+                  className=" bg-lil-red rounded-lg mt-6 px-3 py-1 float-right"
+                  onClick={confirmOrder}
+                >
+                  CONFIRM ORDER
+                </button>
+              </>
+            ) : 
+            <div className="mt-10 mb-2">
+            <Link href={"/"}>
+                  <button className=" bg-lil-red rounded-lg px-3 py-1 float-right">
+                    GO BACK TO HOMEPAGE
+                  </button>
+                </Link><h1 className="">-- This order is to old to be modified --</h1>
+            </div>
+            }
           </div>
         ) : !cartEmpty ? (
           <h1>LOADING</h1>
@@ -175,7 +194,11 @@ export default function orderDrinks() {
         </div>
       ) : (
         <div className="mt-56 text-center bg-lil-light  border-4 border-lil-green rounded-3xl py-24 m-12">
-          {deletePromt? <h1>Your order has been deleted</h1> : <h1>Your order has been received</h1>}
+          {deletePromt ? (
+            <h1>Your order has been deleted</h1>
+          ) : (
+            <h1>Your order has been received</h1>
+          )}
           <h2>You will now be redirected back to the homepage</h2>
         </div>
       )}
