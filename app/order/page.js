@@ -79,78 +79,80 @@ export default function selectTime() {
   }
 
   return (
-    <div className="mt-24 border-4 border-lil-green rounded-3xl p-8 m-12 bg-amber-100">
-      <h1 className="font-bold">
-        Select the Date and Time you would like your order
-      </h1>
-      <div className="grid grid-cols-2 mx-auto mt-6 max-w-5xl pr-12">
-        <div className="col-span-1 flex justify-center">
-          <Calendar
-            onStartDateChange={handleStartDateChange}
-            savedDate={dateFromStorage.dateTime}
-          />
-        </div>
-        <div className="col-span-1 flex justify-center">
-          <div>
-            <h1>Choose number of persons:</h1>
-            {isValid && (
-              <Image
-                src={"/checkmark.png"}
-                width={100}
-                height={100}
-                alt={"checkmark"}
-                priority={true}
-                className="absolute ml-56 mt-6"
-              />
-            )}
-            <h2 className="my-4">
-              <button onClick={() => count > 1 && setCount(count - 1)}>
-                <span className=" bg-lil-green text-yellow-50 rounded-lg px-2">
-                  -
-                </span>
-              </button>
-              <span className="font-bold mx-2">{count}</span>
-              <button onClick={() => setNumperOfPeople(+1)}>
-                <span className=" bg-lil-green text-yellow-50 rounded-lg px-2">
-                  +
-                </span>
-              </button>
-            </h2>
+    <div className="mx-auto max-w-5xl">
+      <div className="mt-24 border-4 border-lil-green rounded-3xl p-8 m-12 bg-lil-light">
+        <h1 className="font-bold">
+          Select the Date and Time you would like your order
+        </h1>
+        <div className="grid grid-cols-2 mx-auto mt-6 max-w-5xl pr-12">
+          <div className="col-span-1 flex justify-center">
+            <Calendar
+              onStartDateChange={handleStartDateChange}
+              savedDate={dateFromStorage.dateTime}
+            />
+          </div>
+          <div className="col-span-1 flex justify-center">
             <div>
-              <form onSubmit={handleSubmit}>
-                <label>
-                  Email:
-                  <input
-                    type="text"
-                    value={email}
-                    onChange={handleChange}
-                    className="bg-amber-100 border-2  border-lil-green rounded-lg px-2 py-1 mt-2 "
-                  />
-                </label>
-                <div>
-                  <button
-                    className="float-right bg-lil-red rounded-lg mt-6 px-3 py-1"
-                    type="submit"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
+              <h1>Choose number of persons:</h1>
+              {isValid && (
+                <Image
+                  src={"/checkmark.png"}
+                  width={100}
+                  height={100}
+                  alt={"checkmark"}
+                  priority={true}
+                  className="absolute ml-56 mt-6"
+                />
+              )}
+              <h2 className="my-4">
+                <button onClick={() => count > 1 && setCount(count - 1)}>
+                  <span className=" bg-lil-green text-yellow-50 rounded-lg px-2">
+                    -
+                  </span>
+                </button>
+                <span className="font-bold mx-2">{count}</span>
+                <button onClick={() => setNumperOfPeople(+1)}>
+                  <span className=" bg-lil-green text-yellow-50 rounded-lg px-2">
+                    +
+                  </span>
+                </button>
+              </h2>
+              <div>
+                <form onSubmit={handleSubmit}>
+                  <label>
+                    <span>Email: </span>
+                    <input
+                      type="text"
+                      value={email}
+                      onChange={handleChange}
+                      className="bg-lil-light border-2  border-lil-green rounded-lg px-2 py-1 mt-2 "
+                    />
+                  </label>
+                  <div>
+                    <button
+                      className="float-right bg-lil-red rounded-lg mt-6 px-3 py-1"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+              {!orderIsEmpty && (
+                <>
+                  <Link href={"/drinks"}>
+                    <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mr-2">
+                      GO BACK
+                    </button>
+                  </Link>
+                  <Link href={"/receipt"}>
+                    <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1">
+                      NEXT
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
-            {!orderIsEmpty && (
-              <>
-                <Link href={"/drinks"}>
-                  <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mr-2">
-                    GO BACK
-                  </button>
-                </Link>
-                <Link href={"/receipt"}>
-                  <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1">
-                    NEXT
-                  </button>
-                </Link>
-              </>
-            )}
           </div>
         </div>
       </div>

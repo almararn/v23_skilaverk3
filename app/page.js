@@ -48,11 +48,11 @@ export default function Home() {
   }
 
   return (
-    <div className="grid sm:grid-cols-2 grid-cols-1 mx-auto mt-32 max-w-5xl pr-12">
+    <div className="grid sm:grid-cols-2 grid-cols-1 mx-auto mt-32 max-w-5xl pr-12 pb-20">
       <div className="">
         <Swiper />
       </div>
-      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 bg-gradient-to-r bg-amber-100">
+      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 bg-gradient-to-r bg-lil-light">
         <p>
           Welcome to Lil'Bits, a cozy and vibrant eatery that will captivate
           your taste buds with its delightful flavors and charming ambiance.
@@ -66,7 +66,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 mt-10 ml-12 mr-12 bg-amber-100">
+      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 mt-10 ml-12 mr-12 bg-lil-light">
         <form onSubmit={handleSubmit}>
           {isValid && (
             <Image
@@ -84,7 +84,7 @@ export default function Home() {
             <span className="font-bold">Email: </span>
             <input
               type="text"
-              className="bg-amber-100 border-2  border-lil-green rounded-lg px-2 py-1 mt-2"
+              className="bg-lil-light border-2  border-lil-green rounded-lg px-2 py-1 mt-2"
               value={email}
               onChange={handleChange}
             />
@@ -113,7 +113,7 @@ export default function Home() {
           </div>
         </form>
       </div>
-      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 mt-10 bg-amber-100">
+      <div className="justify-evenly border-4 border-lil-green rounded-3xl p-4 mt-10 bg-lil-light">
         <p>
           At Lil'Bits, we believe that exceptional food goes hand in hand with
           exceptional service. Our friendly and attentive staff is dedicated to

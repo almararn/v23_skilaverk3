@@ -10,6 +10,8 @@ export default function orderDrinks() {
   const [filteredDrinks, setFilteredDrinks] = useState([])
   const [orderFinished, setOrderFinished] = useState(false)
   const [cartEmpty, setCartEmpty] = useState(false)
+  const [deletingOrder, setDeletingOrder] = useState(false)
+  const [deletePromt, setDeletePromt] = useState(false) 
   const date = new Date(order.dateTime)
   const year = date.getFullYear()
   const month = date.toLocaleString("en-US", { month: "long" })
@@ -51,8 +53,19 @@ export default function orderDrinks() {
   }
 
   const cancelOrder = () => {
-    localStorage.removeItem(order.email)
     setOrderFinished(true)
+    setDeletingOrder(true)
+  }
+
+  const goBack = () => {
+    setDeletingOrder(false)
+    setOrderFinished(false)
+  }
+
+  const confirmedDelete = () => {
+    setDeletingOrder(false)
+    setDeletePromt(true)
+    localStorage.removeItem(order.email)
     setTimeout(() => {
       router.push("/")
     }, 3000)
@@ -87,7 +100,7 @@ export default function orderDrinks() {
     <div className="mx-auto max-w-5xl">
       {!orderFinished ? (
         order.numberOfPeople ? (
-          <div className="bg-amber-100 mt-28 border-4 border-lil-green rounded-3xl p-8 m-12">
+          <div className="bg-lil-light mt-28 border-4 border-lil-green rounded-3xl p-8 m-12">
             <h1 className="font-bold mb-1">RECEIPT:</h1>
             {dish.strMeal && (
               <h2>
@@ -117,47 +130,59 @@ export default function orderDrinks() {
                 at <span>{hours}</span>:<span>{minutes}</span>
               </h2>
             </div>
-            <button
-              className=" bg-lil-red rounded-lg mt-6 px-3 py-1"
-              onClick={confirmOrder}
-            >
-              CONFIRM ORDER
-            </button>{" "}
-            <button
-              className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mx-6"
-              onClick={editOrder}
-            >
-              EDIT ORDER
-            </button>{" "}
             <Link href={"/order"}>
               <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1">
                 GO BACK
               </button>
             </Link>
-            <Link href={"/"}>
-              <button
-                onClick={cancelOrder}
-                className=" bg-lil-red rounded-lg mt-6 px-3 py-1 float-right"
-              >
-                CANCEL ORDER
-              </button>
-            </Link>
+            <button
+              className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mx-4"
+              onClick={editOrder}
+            >
+              EDIT ORDER
+            </button>
+            <button
+              onClick={cancelOrder}
+              className=" bg-lil-red rounded-lg mt-6 px-3 py-1"
+            >
+              CANCEL ORDER
+            </button>
+            <button
+              className=" bg-lil-red rounded-lg mt-6 px-3 py-1 float-right"
+              onClick={confirmOrder}
+            >
+              CONFIRM ORDER
+            </button>
           </div>
         ) : !cartEmpty ? (
           <h1>LOADING</h1>
         ) : null
+      ) : deletingOrder ? (
+        <div className="mt-56 text-center bg-lil-light  border-4 border-lil-green rounded-3xl py-24 m-12">
+          <h1>Are you sure you want to delete your order?</h1>
+          <button
+            className=" bg-lil-green rounded-lg mt-6 px-3 py-1 mr-4"
+            onClick={goBack}
+          >
+            No - GO BACK
+          </button>
+          <button
+            className=" bg-lil-red rounded-lg mt-6 px-3 py-1"
+            onClick={confirmedDelete}
+          >
+            Delete Order
+          </button>
+        </div>
       ) : (
-        <div className="mt-56 text-center bg-amber-100  border-4 border-lil-green rounded-3xl py-24 m-12">
-          <h1>Your order has been received</h1>
-          <h2>You will now be redirected back to the frontpage</h2>
+        <div className="mt-56 text-center bg-lil-light  border-4 border-lil-green rounded-3xl py-24 m-12">
+          {deletePromt? <h1>Your order has been deleted</h1> : <h1>Your order has been received</h1>}
+          <h2>You will now be redirected back to the homepage</h2>
         </div>
       )}
       {cartEmpty && (
-        <div className="mt-56 text-center bg-amber-100  border-4 border-lil-green rounded-3xl py-24 m-12">
+        <div className="mt-56 text-center bg-lil-light  border-4 border-lil-green rounded-3xl py-24 m-12">
           <h1>Your Cart is empty</h1>
-          <button className="mt-4">
-            You will now be redirected back to the frontpage
-          </button>
+          <h2>You will now be redirected back to the homepage</h2>
         </div>
       )}
     </div>

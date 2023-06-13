@@ -33,7 +33,7 @@ export default () => {
         <Image
           src={"/buddha.jpg"}
           width={400}
-          height={200}
+          height={267}
           alt={"dish01"}
           priority={true}
         ></Image>
@@ -42,7 +42,7 @@ export default () => {
         <Image
           src={"/chicken.jpg"}
           width={400}
-          height={200}
+          height={267}
           alt={"dish02"}
           priority={true}
         ></Image>
@@ -51,7 +51,7 @@ export default () => {
         <Image
           src={"/hamburger.jpg"}
           width={400}
-          height={200}
+          height={267}
           alt={"dish03"}
           priority={true}
         ></Image>

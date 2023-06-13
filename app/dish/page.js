@@ -27,7 +27,7 @@ export default function orderDish() {
       setDish(data.meals[0])
     } else {
       setDish(savedDish)
-      if(savedDish.count){
+      if (savedDish.count) {
         setCount(savedDish.count)
       }
     }
@@ -86,7 +86,7 @@ export default function orderDish() {
         {loading && <h1>Loading...</h1>}
       </div>
       {dish.strMealThumb && (
-        <div className="justify-evenly border-4 border-lil-green rounded-3xl p-8 mt-10 mx-12 bg-amber-100">
+        <div className="justify-evenly border-4 border-lil-green rounded-3xl p-8 mt-10 mx-12 bg-lil-light">
           <div className="grid grid-cols-3">
             <div className="col-span-2">
               <h2 className="text-xl font-bold">{dish.strMeal}</h2>
@@ -124,15 +124,12 @@ export default function orderDish() {
                   </h2>
                 </div>
                 <div>
-                  <Link href={"/drinks"}>
-                    <button
-                      className=" bg-lil-red rounded-lg px-3 py-2"
-                      onClick={handleClick}
-                    >
-                      Add To Cart
-                    </button>{" "}
-                    {""}
-                  </Link>
+                  <button
+                    className=" bg-lil-green rounded-lg px-3 py-2"
+                    onClick={getNewDish}
+                  >
+                    Get New Dish
+                  </button>
                 </div>
               </div>
             </div>
@@ -154,25 +151,27 @@ export default function orderDish() {
           <div className="mt-4">
             <Link href={"/"}>
               <button
-                className=" bg-lil-red rounded-lg px-3 py-2"
+                className=" bg-lil-red rounded-lg px-3 py-2 mr-2"
                 onClick={getNewDish}
               >
                 GO BACK
               </button>
             </Link>
-            <button
-              className=" bg-lil-red rounded-lg px-3 py-2 float-right"
-              onClick={getNewDish}
-            >
-              Get New Dish
-            </button>
             {dishFromStorage && (
               <Link href={"/drinks"}>
-                <button className=" bg-lil-red rounded-lg px-3 py-2 float-right mr-2">
-                  SKIP
+                <button className=" bg-lil-red rounded-lg px-3 py-2">
+                  NEXT
                 </button>
               </Link>
             )}
+            <Link href={"/drinks"}>
+              <button
+                className=" bg-lil-red rounded-lg px-3 py-2 float-right"
+                onClick={handleClick}
+              >
+                Add To Cart
+              </button>
+            </Link>
           </div>
         </div>
       )}

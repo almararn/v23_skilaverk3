@@ -9,10 +9,10 @@ const topMenu = () => {
             <Image
               src={"/logo_cropped.png"}
               width={250}
-              height={97}
+              height={98}
               alt={"logo"}
               priority={true}
-              className="mt-2 object-none"
+              className="mt-2"
             ></Image>
           </Link>
         </li>

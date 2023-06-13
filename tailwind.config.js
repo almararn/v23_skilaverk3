@@ -11,6 +11,7 @@ module.exports = {
         'lil-green': '#3E5F54',
         'lil-red': '#CF6757',
         'lil-yellow': '#E3E996',
+        'lil-light': '#F3EAE8',
       },
       fontFamily: {
         "poppins": ["Poppins", "sans-serif"]
