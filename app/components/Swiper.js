@@ -9,7 +9,7 @@ import "swiper/css/pagination"
 export default () => {
   return (
     <Swiper
-    className="rounded-3xl"
+    className="rounded-3xl object-none"
       modules={[Autoplay, Pagination]}
       spaceBetween={5}
       slidesPerView={1}

@@ -29,6 +29,7 @@ export default function orderDrinks() {
     setOrder(savedDate)
     if (!currentOrder) {
       setCartEmpty(true)
+      redirectHome()
     }
   }, [])
 
@@ -49,6 +50,20 @@ export default function orderDrinks() {
     }, 3000)
   }
 
+  const cancelOrder = () => {
+    localStorage.removeItem(order.email)
+    setOrderFinished(true)
+    setTimeout(() => {
+      router.push("/")
+    }, 3000)
+  }
+
+  const redirectHome = () => {
+    setTimeout(() => {
+      router.push("/")
+    }, 3000)
+  }
+
   const editOrder = () => {
     router.push("/dish")
   }
@@ -62,16 +77,18 @@ export default function orderDrinks() {
     drinks.forEach((drink) => {
       total += drink.count * price(drink.abv)
     })
-    total += dish.price * dish.count
+    if (dish.price) {
+      total += dish.price * dish.count
+    }
     return total
   }
 
   return (
-    <>
+    <div className="mx-auto max-w-5xl">
       {!orderFinished ? (
         order.numberOfPeople ? (
-          <>
-            <h1>RECEIPT:</h1>
+          <div className="bg-amber-100 mt-28 border-4 border-lil-green rounded-3xl p-8 m-12">
+            <h1 className="font-bold mb-1">RECEIPT:</h1>
             {dish.strMeal && (
               <h2>
                 {dish.count} x {dish.strMeal} @ {dish.price} kr.
@@ -86,8 +103,12 @@ export default function orderDrinks() {
                 ))}
               </ul>
             )}
-            <h2>Total price: {total()} kr.</h2>
-            <h2>Customer: {order.email}</h2>
+            <h2 className="my-2">
+              Total price:<span className="font-bold mx-1">{total()} kr.</span>
+            </h2>
+            <h2 className="mb-2">
+              Customer:<span className="font-bold mx-1">{order.email}</span>
+            </h2>
             <div>
               <h2>You have a table reserved at our restaurant</h2>
               <h2>
@@ -96,29 +117,49 @@ export default function orderDrinks() {
                 at <span>{hours}</span>:<span>{minutes}</span>
               </h2>
             </div>
-            <button onClick={confirmOrder}>CONFIRM ORDER</button> {" "}
-            <button onClick={editOrder}>EDIT ORDER</button> {" "}
+            <button
+              className=" bg-lil-red rounded-lg mt-6 px-3 py-1"
+              onClick={confirmOrder}
+            >
+              CONFIRM ORDER
+            </button>{" "}
+            <button
+              className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mx-6"
+              onClick={editOrder}
+            >
+              EDIT ORDER
+            </button>{" "}
             <Link href={"/order"}>
-            <button className="mt-4">GO BACK</button>
-          </Link>
-          </>
+              <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1">
+                GO BACK
+              </button>
+            </Link>
+            <Link href={"/"}>
+              <button
+                onClick={cancelOrder}
+                className=" bg-lil-red rounded-lg mt-6 px-3 py-1 float-right"
+              >
+                CANCEL ORDER
+              </button>
+            </Link>
+          </div>
         ) : !cartEmpty ? (
           <h1>LOADING</h1>
         ) : null
       ) : (
-        <div className="mt-56 text-center">
+        <div className="mt-56 text-center bg-amber-100  border-4 border-lil-green rounded-3xl py-24 m-12">
           <h1>Your order has been received</h1>
           <h2>You will now be redirected back to the frontpage</h2>
         </div>
       )}
       {cartEmpty && (
-        <div className="mt-56 text-center">
+        <div className="mt-56 text-center bg-amber-100  border-4 border-lil-green rounded-3xl py-24 m-12">
           <h1>Your Cart is empty</h1>
-          <Link href={"/"}>
-            <button className="mt-4">Go back to homepage</button>
-          </Link>
+          <button className="mt-4">
+            You will now be redirected back to the frontpage
+          </button>
         </div>
       )}
-    </>
+    </div>
   )
 }

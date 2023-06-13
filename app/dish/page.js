@@ -13,7 +13,7 @@ export default function orderDish() {
   const [dishFromStorage, setDishFromStorage] = useState(false)
   const [newDish, setNewDish] = useState()
   const [dateFromStorage, setDateFromStorage] = useState([])
-  const url ="https://themealdb.com/api/json/v1/1/random.php"
+  const url = "https://themealdb.com/api/json/v1/1/random.php"
   const { data, loading, error } = useAxiosGet(url, newDish)
 
   useEffect(() => {
@@ -25,12 +25,13 @@ export default function orderDish() {
     setDateFromStorage(savedDate)
     if ((data && savedDish.length == 0) || newDish) {
       setDish(data.meals[0])
-      console.log('númer1')
     } else {
       setDish(savedDish)
-      console.log('númer2')
+      if(savedDish.count){
+        setCount(savedDish.count)
+      }
     }
-    if(currentOrder && !newDish){
+    if (currentOrder && !newDish) {
       setDishFromStorage(true)
     }
   }, [data])
@@ -49,7 +50,11 @@ export default function orderDish() {
     setPrice(price + ingredients.length * 80)
   }, [ingredients])
 
-  const handleClick = function () {
+  let totalPrice = () => {
+    return price * count
+  }
+
+  const handleClick = () => {
     const newDish = { ...dish, count: count, price: price }
     let order = {
       dateTime: dateFromStorage.dateTime?.toString(),
@@ -75,47 +80,102 @@ export default function orderDish() {
   }
 
   return (
-    <>
-      {error && <h2>{error.message}</h2>}
-      {loading && <h1>Loading...</h1>}
+    <div className="mt-24 max-w-5xl mx-auto mb-20">
+      <div className="ml-24 mt-24">
+        {error && <h2>{error.message}</h2>}
+        {loading && <h1>Loading...</h1>}
+      </div>
       {dish.strMealThumb && (
-        <>
-          <h2 className="text-lg font-bold">{dish.strMeal}</h2>
-          <h3>{dish.strCategory}</h3>
-          <h3>
-            Ingredients:{" "}
-            <span>
-              {ingredients.map((items, index) => (
-                <span key={index}>{items} </span>
-              ))}
-            </span>
-          </h3>
-          <Image
-            src={dish.strMealThumb}
-            width={200}
-            height={200}
-            alt={"dish01"}
-            priority={true}
-          ></Image>
-          <h2>How It's made:</h2>
+        <div className="justify-evenly border-4 border-lil-green rounded-3xl p-8 mt-10 mx-12 bg-amber-100">
+          <div className="grid grid-cols-3">
+            <div className="col-span-2">
+              <h2 className="text-xl font-bold">{dish.strMeal}</h2>
+              <h3>{dish.strCategory}</h3>
+              <h3>
+                Ingredients:{" "}
+                <span>
+                  {ingredients.map((items, index) => (
+                    <span key={index}>{items} </span>
+                  ))}
+                </span>
+              </h3>
+              <div className="flex justify-between items-center mt-8">
+                <div className="text-xl">
+                  {totalPrice && (
+                    <h2>
+                      Price: <span className="font-bold">{totalPrice()}</span>{" "}
+                      kr.
+                    </h2>
+                  )}
+                </div>
+                <div>
+                  <h2>
+                    <button onClick={() => count > 1 && setCount(count - 1)}>
+                      <span className=" bg-lil-green text-yellow-50 font-bold rounded-lg px-3 py-1">
+                        -
+                      </span>
+                    </button>
+                    <span className="text-xl font-bold mx-3">{count}</span>
+                    <button onClick={() => setCount(count + 1)}>
+                      <span className=" bg-lil-green text-yellow-50 font-bold rounded-lg px-3 py-1">
+                        +
+                      </span>{" "}
+                    </button>
+                  </h2>
+                </div>
+                <div>
+                  <Link href={"/drinks"}>
+                    <button
+                      className=" bg-lil-red rounded-lg px-3 py-2"
+                      onClick={handleClick}
+                    >
+                      Add To Cart
+                    </button>{" "}
+                    {""}
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="col-span-1 flex justify-end">
+              <div className="object-none">
+                <Image
+                  src={dish.strMealThumb}
+                  width={250}
+                  height={250}
+                  alt={"dish01"}
+                  priority={true}
+                  className="rounded-3xl object-none"
+                ></Image>
+              </div>
+            </div>
+          </div>
+          <h2 className="font-bold">How It's made:</h2>
           <p>{dish.strInstructions}</p>
-          {price !== 2500 && <h2>Price: {price} kr.</h2>}
-          <h2>
-            {" "}
-            <button onClick={() => count > 1 && setCount(count - 1)}>
-              X
-            </button>{" "}
-            {count} <button onClick={() => setCount(count + 1)}>X</button>
-          </h2>
-          <Link href={"/drinks"}>
-            <button onClick={handleClick}>Add To Cart</button> {""}
-          </Link>
-          <button onClick={getNewDish}>Get New Dish</button> {""}
-          {dishFromStorage &&<Link href={"/drinks"}>
-             <button>NEXT</button>
-          </Link>} 
-        </>
+          <div className="mt-4">
+            <Link href={"/"}>
+              <button
+                className=" bg-lil-red rounded-lg px-3 py-2"
+                onClick={getNewDish}
+              >
+                GO BACK
+              </button>
+            </Link>
+            <button
+              className=" bg-lil-red rounded-lg px-3 py-2 float-right"
+              onClick={getNewDish}
+            >
+              Get New Dish
+            </button>
+            {dishFromStorage && (
+              <Link href={"/drinks"}>
+                <button className=" bg-lil-red rounded-lg px-3 py-2 float-right mr-2">
+                  SKIP
+                </button>
+              </Link>
+            )}
+          </div>
+        </div>
       )}
-    </>
+    </div>
   )
 }

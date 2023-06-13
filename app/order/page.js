@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import Calendar from "../components/Calendar"
 
 export default function selectTime() {
@@ -78,42 +79,81 @@ export default function selectTime() {
   }
 
   return (
-    <>
-      <div>
-        <h1>Select the Date and Time you would like your order</h1>
-        <Calendar
-          onStartDateChange={handleStartDateChange}
-          savedDate={dateFromStorage.dateTime}
-        />
-      </div>
-      <h1>Choose number of persons:</h1>
-      <h2>
-        <button onClick={() => count > 1 && setCount(count - 1)}>x</button>
-        {count}
-        <button onClick={() => setNumperOfPeople(+1)}>x</button>
-      </h2>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Email:
-            <input type="text" value={email} onChange={handleChange} />
-            {!isValid && <p>Please enter a valid email address.</p>}
-          </label>
+    <div className="mt-24 border-4 border-lil-green rounded-3xl p-8 m-12 bg-amber-100">
+      <h1 className="font-bold">
+        Select the Date and Time you would like your order
+      </h1>
+      <div className="grid grid-cols-2 mx-auto mt-6 max-w-5xl pr-12">
+        <div className="col-span-1 flex justify-center">
+          <Calendar
+            onStartDateChange={handleStartDateChange}
+            savedDate={dateFromStorage.dateTime}
+          />
+        </div>
+        <div className="col-span-1 flex justify-center">
           <div>
-            <button type="submit">Submit</button>
+            <h1>Choose number of persons:</h1>
+            {isValid && (
+              <Image
+                src={"/checkmark.png"}
+                width={100}
+                height={100}
+                alt={"checkmark"}
+                priority={true}
+                className="absolute ml-56 mt-6"
+              />
+            )}
+            <h2 className="my-4">
+              <button onClick={() => count > 1 && setCount(count - 1)}>
+                <span className=" bg-lil-green text-yellow-50 rounded-lg px-2">
+                  -
+                </span>
+              </button>
+              <span className="font-bold mx-2">{count}</span>
+              <button onClick={() => setNumperOfPeople(+1)}>
+                <span className=" bg-lil-green text-yellow-50 rounded-lg px-2">
+                  +
+                </span>
+              </button>
+            </h2>
+            <div>
+              <form onSubmit={handleSubmit}>
+                <label>
+                  Email:
+                  <input
+                    type="text"
+                    value={email}
+                    onChange={handleChange}
+                    className="bg-amber-100 border-2  border-lil-green rounded-lg px-2 py-1 mt-2 "
+                  />
+                </label>
+                <div>
+                  <button
+                    className="float-right bg-lil-red rounded-lg mt-6 px-3 py-1"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+            {!orderIsEmpty && (
+              <>
+                <Link href={"/drinks"}>
+                  <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1 mr-2">
+                    GO BACK
+                  </button>
+                </Link>
+                <Link href={"/receipt"}>
+                  <button className=" bg-lil-red rounded-lg mt-6 px-3 py-1">
+                    NEXT
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
-        </form>
+        </div>
       </div>
-      {!orderIsEmpty && (
-        <>
-          <Link href={"/receipt"}>
-            <button>NEXT</button>
-          </Link> {""}
-          <Link href={"/drinks"}>
-            <button>GO BACK</button>
-          </Link>
-        </>
-      )}
-    </>
+    </div>
   )
 }

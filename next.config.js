@@ -5,6 +5,9 @@ const nextConfig = {
       {
         hostname: "www.themealdb.com",
       },
+      {
+        hostname: "images.punkapi.com",
+      },
     ],
   },
 }
