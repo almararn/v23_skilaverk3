@@ -44,7 +44,7 @@ export default function orderDish() {
   }, [ingredients])
 
   let handleClick = function () {
-    const newDish = { ...dish, count: count }
+    const newDish = { ...dish, count: count, price: price }
     let order = {
       dateTime: dateFromStorage.dateTime?.toString(),
       numberOfPeople: dateFromStorage.numberOfPeople,

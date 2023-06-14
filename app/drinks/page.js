@@ -37,6 +37,10 @@ export default function orderDrinks() {
     )
   }
 
+  const price = (abv) => {
+    return Math.round(abv * 200)
+  }
+
   const handleClick = () => {
     let order = {
       dateTime: dateFromStorage.dateTime?.toString(),
@@ -64,6 +68,7 @@ export default function orderDrinks() {
               <h3 className="font-bold">{items.name}</h3>
               <h4>{items.tagline}</h4>
               <h5>{items.description}</h5>
+              <h5>price: {price(items.abv)} kr.</h5>
               <h2>
                 {" "}
                 <button

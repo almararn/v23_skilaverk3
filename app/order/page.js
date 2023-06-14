@@ -12,7 +12,7 @@ export default function selectTime() {
   const [date, setDate] = useState([])
   const [dateFromStorage, setDateFromStorage] = useState([])
   const [email, setEmail] = useState("")
-  const [isValid, setValid] = useState(false)
+  const [isValid, setIsValid] = useState(false)
   const [count, setCount] = useState(1)
   const router = useRouter()
 
@@ -27,12 +27,13 @@ export default function selectTime() {
       setDateFromStorage(savedDate)
       setEmail(savedDate.email)
       setCount(savedDate.numberOfPeople)
+      setDate(new Date(savedDate.dateTime))
     }
   }, [])
 
   useEffect(() => {
     if (dateFromStorage.email) {
-      setValid(true)
+      setIsValid(true)
     }
   }, [dateFromStorage])
 
@@ -44,30 +45,16 @@ export default function selectTime() {
     setEmail(e.target.value.toLowerCase())
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{1,}$/i
     const isValidEmail = emailRegex.test(email)
-    setValid(isValidEmail)
+    setIsValid(isValidEmail)
   }
 
   const setNumperOfPeople = (increment) => {
     setCount(count + increment)
   }
-  console.log("dateFromStorage", dateFromStorage)
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (dateFromStorage.dateTime) {
-      let order = {
-        dateTime: dateFromStorage.dateTime?.toString(),
-        numberOfPeople: dateFromStorage.numberOfPeople,
-        email: dateFromStorage.email,
-      }
-      localStorage.setItem(
-        "current-order",
-        JSON.stringify({
-          dish: dish,
-          drinks: drinks,
-          order,
-        })
-      )
-    } else {
+    if (isValid) {
       let order = {
         dateTime: date.toString(),
         numberOfPeople: count,
@@ -81,8 +68,8 @@ export default function selectTime() {
           order,
         })
       )
+      router.push("/receipt")
     }
-    router.push("/receipt")
   }
 
   return (
